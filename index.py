@@ -1,17 +1,12 @@
-from draw import *
+from Board import Draw
 from tkinter import *
 from PIL import Image, ImageTk
 
 root = Tk()
-root.title("Hello")
+root.title("Game")
 
-canvas = Canvas(root, width=500, height=500)
-canvas.pack()
+draw = Draw(root)
 
-n = 10
-matrix = [[0 for i in range(n)] for j in range(n)]
-draw = Draw(matrix, root)
-
-root.bind("<Key>", lambda x: print(x.keycode))
+root.bind("<Key>", lambda x: draw.move(x.keycode))
 
 root.mainloop()
