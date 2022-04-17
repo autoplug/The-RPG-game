@@ -1,6 +1,7 @@
 from tkinter import *
 from Sprite import *
 import random
+import time
 
 
 class Hero(Sprite):
@@ -11,7 +12,12 @@ class Hero(Sprite):
     image_left = None
     image_right = None
 
+    last_move = time.time()
+    previous_location = [0, 0]
+
     move_count = 0
+
+    Level = 0
 
     d6 = 2
     __HP = 20 + 3 * d6
@@ -43,22 +49,17 @@ class Hero(Sprite):
 
     def move(self, event):
         self.move_count += 1
-        if event.keysym == "Right":
-            self.image = self.image_right
-            if self.x < 9 and self.game.map[self.y][self.x+1] != "w":
-                self.x += 1
-        elif event.keysym == "Left":
-            self.image = self.image_left
-            if self.x > 0 and self.game.map[self.y][self.x-1] != "w":
-                self.x -= 1
-        elif event.keysym == "Down":
-            self.image = self.image_down
-            if self.y < 9 and self.game.map[self.y+1][self.x] != "w":
-                self.y += 1
-        elif event.keysym == "Up":
-            self.image = self.image_up
-            if self.y > 0 and self.game.map[self.y-1][self.x] != "w":
-                self.y -= 1
+        if self.game.move_permit(direction=event.keysym, x=self.x, y=self.y):
+            [self.x, self.y] = self.game.move_permit(
+                direction=event.keysym, x=self.x, y=self.y)
+            if event.keysym == "Right":
+                self.image = self.image_right
+            elif event.keysym == "Left":
+                self.image = self.image_left
+            elif event.keysym == "Down":
+                self.image = self.image_down
+            elif event.keysym == "Up":
+                self.image = self.image_up
 
     # HP prperty
     @property
@@ -87,6 +88,8 @@ class Hero(Sprite):
             return
         if self.SP >= sprite.DP:
             sprite.HP -= self.SP
+            if sprite.HP == 0:
+                self.Level += 1
 
     def update(self):
         x = self.x * self.game.image_size

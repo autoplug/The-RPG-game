@@ -9,6 +9,7 @@ class Boss(Sprite):
     image = None
 
     last_move = time.time()
+    previous_move = [0, 0]
 
     d6 = 1
     Level = 1
@@ -41,18 +42,11 @@ class Boss(Sprite):
 
     def move(self):
         while True:
-            direction = random.randint(0, 4)
-            if direction == 0 and self.x < 9 and self.game.map[self.y][self.x+1] == "f":
-                self.x += 1
-                break
-            elif direction == 1 and self.x > 0 and self.game.map[self.y][self.x-1] == "f":
-                self.x -= 1
-                break
-            elif direction == 2 and self.y < 9 and self.game.map[self.y+1][self.x] == "f":
-                self.y += 1
-                break
-            elif direction == 3 and self.y > 0 and self.game.map[self.y-1][self.x] == "f":
-                self.y -= 1
+            direction = ["Right", "Left", "Up", "Down"]
+            direction = direction[random.randint(0, 3)]
+            if self.game.move_permit(direction=direction, x=self.x, y=self.y):
+                [self.x, self.y] = self.game.move_permit(
+                    direction=direction, x=self.x, y=self.y)
                 break
 
     @property

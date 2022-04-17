@@ -74,21 +74,25 @@ class Game:
 
     def draw_menu(self):
         self.label["text"] = ""
+        self.label["text"] += "Level    : " + str(self.hero.Level) + '\n'
         self.label["text"] += "Hero     : " + str(self.hero.HP) + '\n'
         self.label['text'] += "Boss     : " + str(self.boss.HP) + '\n'
         for skeleton in self.skeletons:
             self.label['text'] += "Skeleton : " + str(skeleton.HP) + '\n'
 
-    def move_permit(self, direction="right", x=0, y=0):
-        if direction == "right" and x < 9 and self.map[y][x+1] != "w":
-            return True
-        if direction == "left" and x > 0 and self.map[y][x-1] != "w":
-            return True
-        if direction == "down" and y < 9 and self.map[y+1][x] != "w":
-            return True
-        if direction == "up" and y > 0 and self.map[y-1][x] != "w":
-            return True
+    def move_permit(self, direction="Right", x=0, y=0):
+        if direction == "Right" and x < 9 and self.map[y][x+1] != "w":
+            return [x+1, y]
+        if direction == "Left" and x > 0 and self.map[y][x-1] != "w":
+            return [x-1, y]
+        if direction == "Down" and y < 9 and self.map[y+1][x] != "w":
+            return [x, y+1]
+        if direction == "Up" and y > 0 and self.map[y-1][x] != "w":
+            return [x, y-1]
         return False
+
+    def next_level(self):
+        print("You success to go to the next level.")
 
     def update(self):
         self.collide()
