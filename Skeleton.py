@@ -7,9 +7,12 @@ from Sprite import *
 class Skeleton(Sprite):
     game = None
     image = None
+    image_key = None
 
     d6 = 1
     Level = 1
+
+    key = False
 
     last_move = 0
 
@@ -19,8 +22,13 @@ class Skeleton(Sprite):
 
     def __init__(self, game):
         self.game = game
+        game.sprite(skeleton=self)
+
         self.image = PhotoImage(file="images/skeleton.png")
         self.image = self.image.subsample(2)
+
+        self.image_key = PhotoImage(file="images/key.png")
+        self.image_key = self.image_key.subsample(2)
 
         self.init_random()
 
@@ -52,15 +60,20 @@ class Skeleton(Sprite):
         print("The skeleton is dead.")
 
     def move(self):
-        direction = random.randint(0, 4)
-        if direction == 0 and self.x < 9 and self.game.map[self.y][self.x+1] == "f":
-            self.x += 1
-        elif direction == 1 and self.x > 0 and self.game.map[self.y][self.x-1] == "f":
-            self.x -= 1
-        elif direction == 2 and self.y < 9 and self.game.map[self.y+1][self.x] == "f":
-            self.y += 1
-        elif direction == 3 and self.y > 0 and self.game.map[self.y-1][self.x] == "f":
-            self.y -= 1
+        while True:
+            direction = random.randint(0, 4)
+            if direction == 0 and self.x < 9 and self.game.map[self.y][self.x+1] == "f":
+                self.x += 1
+                break
+            elif direction == 1 and self.x > 0 and self.game.map[self.y][self.x-1] == "f":
+                self.x -= 1
+                break
+            elif direction == 2 and self.y < 9 and self.game.map[self.y+1][self.x] == "f":
+                self.y += 1
+                break
+            elif direction == 3 and self.y > 0 and self.game.map[self.y-1][self.x] == "f":
+                self.y -= 1
+                break
 
     def strike(self, sprite=None):
         if not sprite:
@@ -74,6 +87,11 @@ class Skeleton(Sprite):
         if time.time() - self.last_move > 1:
             self.last_move = time.time()
             self.move()
+
         x = self.x * self.game.image_size
         y = self.y * self.game.image_size
         self.game.canvas.create_image(x, y, image=self.image, anchor=NW)
+
+        if self.key:
+            self.game.canvas.create_image(
+                x, y, image=self.image_key, anchor=NW)

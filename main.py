@@ -6,9 +6,11 @@ from Game import *
 game = Game()
 hero = Hero(game)
 boss = Boss(game)
-skeleton = Skeleton(game)
+skeleton1 = Skeleton(game)
+skeleton1.key = True
+skeleton2 = Skeleton(game)
+skeleton3 = Skeleton(game)
 
-game.sprite(hero=hero, boss=boss, skeleton=skeleton)
 
 while True:
     game.update()

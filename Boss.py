@@ -22,6 +22,8 @@ class Boss(Sprite):
 
     def __init__(self, game):
         self.game = game
+        game.sprite(boss=self)
+
         self.image = PhotoImage(file="images/boss.png")
         self.image = self.image.subsample(2)
 
@@ -38,29 +40,34 @@ class Boss(Sprite):
                     break
 
     def move(self):
-        direction = random.randint(0, 4)
-        if direction == 0 and self.x < 9 and self.game.map[self.y][self.x+1] == "f":
-            self.x += 1
-        elif direction == 1 and self.x > 0 and self.game.map[self.y][self.x-1] == "f":
-            self.x -= 1
-        elif direction == 2 and self.y < 9 and self.game.map[self.y+1][self.x] == "f":
-            self.y += 1
-        elif direction == 3 and self.y > 0 and self.game.map[self.y-1][self.x] == "f":
-            self.y -= 1
+        while True:
+            direction = random.randint(0, 4)
+            if direction == 0 and self.x < 9 and self.game.map[self.y][self.x+1] == "f":
+                self.x += 1
+                break
+            elif direction == 1 and self.x > 0 and self.game.map[self.y][self.x-1] == "f":
+                self.x -= 1
+                break
+            elif direction == 2 and self.y < 9 and self.game.map[self.y+1][self.x] == "f":
+                self.y += 1
+                break
+            elif direction == 3 and self.y > 0 and self.game.map[self.y-1][self.x] == "f":
+                self.y -= 1
+                break
 
     @property
     def HP(self):
         return self._HP
 
     @HP.setter
-    def HP(self, a):
-        if self._HP > 0 and a <= 0:
+    def HP(self, value):
+        if self._HP > 0 and value <= 0:
             print("The boss Died.")
 
-        if a <= 0:
+        if value <= 0:
             self._HP = 0
         else:
-            self._HP = a
+            self._HP = value
 
     def strike(self, sprite=None):
         if not sprite:

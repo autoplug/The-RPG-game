@@ -13,7 +13,7 @@ class Game:
 
     hero = None
     boss = None
-    skeleton = None
+    skeletons = []
 
     def __init__(self):
         self.window = Tk()
@@ -51,12 +51,12 @@ class Game:
         if boss:
             self.boss = boss
         if skeleton:
-            self.skeleton = skeleton
+            self.skeletons.append(skeleton)
 
     def keypress(self, event):
-        if event.keycode == 889192475:
+        if event.keysym == "Escape":
             self.quit = True
-        if event.keycode == 822083616:
+        if event.keysym == "space":
             sprite = self.collide()
             if sprite:
                 self.hero.strike(sprite)
@@ -67,12 +67,28 @@ class Game:
     def collide(self):
         if self.boss.HP > 0 and self.hero.x == self.boss.x and self.hero.y == self.boss.y:
             return self.boss
-        if self.skeleton.HP > 0 and self.hero.x == self.skeleton.x and self.hero.y == self.skeleton.y:
-            return self.skeleton
+        for skeleton in self.skeletons:
+            if skeleton.HP > 0 and self.hero.x == skeleton.x and self.hero.y == skeleton.y:
+                return skeleton
         return None
 
     def draw_menu(self):
-        self.label["text"] = "Health : " + str(self.hero.HP)
+        self.label["text"] = ""
+        self.label["text"] += "Hero     : " + str(self.hero.HP) + '\n'
+        self.label['text'] += "Boss     : " + str(self.boss.HP) + '\n'
+        for skeleton in self.skeletons:
+            self.label['text'] += "Skeleton : " + str(skeleton.HP) + '\n'
+
+    def move_permit(self, direction="right", x=0, y=0):
+        if direction == "right" and x < 9 and self.map[y][x+1] != "w":
+            return True
+        if direction == "left" and x > 0 and self.map[y][x-1] != "w":
+            return True
+        if direction == "down" and y < 9 and self.map[y+1][x] != "w":
+            return True
+        if direction == "up" and y > 0 and self.map[y-1][x] != "w":
+            return True
+        return False
 
     def update(self):
         self.collide()
@@ -92,7 +108,8 @@ class Game:
 
         self.hero.update()
         self.boss.update()
-        self.skeleton.update()
+        for skeleton in self.skeletons:
+            skeleton.update()
 
         self.window.update_idletasks()
         self.window.update()
