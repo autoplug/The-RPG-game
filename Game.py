@@ -45,6 +45,10 @@ class Game:
             for char in file_map[line]:
                 self.map[line].append(char)
 
+    def load_image(self, path):
+        image = PhotoImage(file="images/hero-left.png")
+        self.image_left = self.image_left.subsample(2)
+
     def sprite(self, hero=None, boss=None, skeleton=None):
         if hero:
             self.hero = hero
@@ -92,11 +96,16 @@ class Game:
         return False
 
     def next_level(self):
-        print("You success to go to the next level.")
+        if self.boss.HP == 0:
+            for skeleton in self.skeletons:
+                if skeleton.key and skeleton.HP == 0:
+                    return True
+        return False
 
     def update(self):
         self.collide()
         self.draw_menu()
+        self.next_level()
 
         self.canvas.delete("all")
         for x in range(10):

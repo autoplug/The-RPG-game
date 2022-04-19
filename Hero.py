@@ -88,6 +88,7 @@ class Hero(Sprite):
             return
         if self.SP >= sprite.DP:
             sprite.HP -= self.SP
+            sprite.strike(self)
             if sprite.HP == 0:
                 self.Level += 1
 
