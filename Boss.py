@@ -22,23 +22,13 @@ class Boss(Sprite):
     y = 0
 
     def __init__(self, game):
-        self.game = game
+        super().__init__(game)
         game.sprite(boss=self)
 
         self.image = PhotoImage(file="images/boss.png")
         self.image = self.image.subsample(2)
 
-        self.init_random()
-
-    def init_random(self):
-        while True:
-            x = random.randint(0, 9)
-            y = random.randint(0, 9)
-            if self.game.map[y][x] != "w":
-                if x or y:
-                    self.x = x
-                    self.y = y
-                    break
+        self.init_location()
 
     def move(self):
         while True:

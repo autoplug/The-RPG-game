@@ -28,7 +28,7 @@ class Hero(Sprite):
     y = 0
 
     def __init__(self, game):
-        self.game = game
+        super().__init__(game)
         game.sprite(hero=self)
 
         self.HP = 20 + 3 * random.randint(1, 6)

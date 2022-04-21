@@ -1,4 +1,5 @@
 from tkinter import *
+import random
 
 
 class Sprite:
@@ -7,9 +8,10 @@ class Sprite:
 
     __x = 0
     __y = 0
+    game = None
 
-    def __init__(self):
-        pass
+    def __init__(self, game):
+        self.game = game
 
     @property
     def x(self):
@@ -32,3 +34,13 @@ class Sprite:
             return
         if self.SP >= sprite.DP:
             sprite.HP -= 1
+
+    def init_location(self):
+        while True:
+            x = random.randint(0, 9)
+            y = random.randint(0, 9)
+            if self.game.map[y][x] != "w":
+                if x or y:
+                    self.x = x
+                    self.y = y
+                    break

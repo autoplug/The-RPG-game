@@ -24,7 +24,7 @@ class Skeleton(Sprite):
     SP = Level * d6
 
     def __init__(self, game):
-        self.game = game
+        super().__init__(game)
         game.sprite(skeleton=self)
 
         self.image = PhotoImage(file="images/skeleton.png")
@@ -33,17 +33,7 @@ class Skeleton(Sprite):
         self.image_key = PhotoImage(file="images/key.png")
         self.image_key = self.image_key.subsample(2)
 
-        self.init_random()
-
-    def init_random(self):
-        while True:
-            x = random.randint(0, 9)
-            y = random.randint(0, 9)
-            if self.game.map[y][x] != "w":
-                if x or y:
-                    self.x = x
-                    self.y = y
-                    break
+        self.init_location()
 
     @property
     def HP(self):

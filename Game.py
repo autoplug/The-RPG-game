@@ -7,7 +7,7 @@ class Game:
 
     window = None
 
-    level = 1
+    Level = 1
 
     quit = False
 
@@ -37,17 +37,19 @@ class Game:
         self.wall = self.wall.subsample(2)
 
     def load_map(self):
-        file_map = open("maps/1.txt", "r")
+        file_map = open(f"maps/{self.Level}.txt", "r")
         file_map = file_map.read()
         file_map = file_map.split("\n")
+        self.map = []
         for line in range(len(file_map)):
             self.map.append([])
             for char in file_map[line]:
                 self.map[line].append(char)
 
     def load_image(self, path):
-        image = PhotoImage(file="images/hero-left.png")
-        self.image_left = self.image_left.subsample(2)
+        image = PhotoImage(file=path)
+        image = image.subsample(2)
+        return image
 
     def sprite(self, hero=None, boss=None, skeleton=None):
         if hero:
@@ -99,7 +101,16 @@ class Game:
         if self.boss.HP == 0:
             for skeleton in self.skeletons:
                 if skeleton.key and skeleton.HP == 0:
-                    return True
+                    self.Level += 1
+                    print("level up", self.Level)
+                    self.hero.x = 0
+                    self.hero.y = 0
+                    self.boss.HP = 2
+                    self.boss.init_location()
+                    for skeleton in self.skeletons:
+                        skeleton.HP = 2
+                    self.load_map()
+
         return False
 
     def update(self):
