@@ -33,7 +33,7 @@ class Skeleton(Sprite):
         self.image_key = PhotoImage(file="images/key.png")
         self.image_key = self.image_key.subsample(2)
 
-        self.init_location()
+        self.random_location()
 
     @property
     def HP(self):
@@ -52,15 +52,6 @@ class Skeleton(Sprite):
     def death(self):
         print("The skeleton is dead.")
 
-    def move(self):
-        while True:
-            direction = ["Right", "Left", "Up", "Down"]
-            direction = direction[random.randint(0, 3)]
-            if self.game.move_permit(direction=direction, x=self.x, y=self.y):
-                [self.x, self.y] = self.game.move_permit(
-                    direction=direction, x=self.x, y=self.y)
-                break
-
     def strike(self, sprite=None):
         if not sprite:
             return
@@ -70,9 +61,7 @@ class Skeleton(Sprite):
     def update(self):
         if self.HP <= 0:
             return
-        if time.time() - self.last_move > 1:
-            self.last_move = time.time()
-            self.move()
+        self.random_move()
 
         x = self.x * self.game.image_size
         y = self.y * self.game.image_size

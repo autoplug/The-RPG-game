@@ -102,7 +102,6 @@ class Game:
             for skeleton in self.skeletons:
                 if skeleton.key and skeleton.HP == 0:
                     self.Level += 1
-                    print("level up", self.Level)
                     self.hero.x = 0
                     self.hero.y = 0
                     self.boss.HP = 2

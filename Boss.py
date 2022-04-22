@@ -28,16 +28,7 @@ class Boss(Sprite):
         self.image = PhotoImage(file="images/boss.png")
         self.image = self.image.subsample(2)
 
-        self.init_location()
-
-    def move(self):
-        while True:
-            direction = ["Right", "Left", "Up", "Down"]
-            direction = direction[random.randint(0, 3)]
-            if self.game.move_permit(direction=direction, x=self.x, y=self.y):
-                [self.x, self.y] = self.game.move_permit(
-                    direction=direction, x=self.x, y=self.y)
-                break
+        self.random_location()
 
     @property
     def HP(self):
@@ -62,9 +53,7 @@ class Boss(Sprite):
     def update(self):
         if self.HP <= 0:
             return
-        if time.time() - self.last_move > 1:
-            self.last_move = time.time()
-            self.move()
+        self.random_move()
         x = self.x * self.game.image_size
         y = self.y * self.game.image_size
         self.game.canvas.create_image(x, y, image=self.image, anchor=NW)
