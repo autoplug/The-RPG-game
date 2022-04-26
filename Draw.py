@@ -3,14 +3,12 @@ from tkinter import *
 
 class Draw:
 
-    @staticmethod
-    def init():
-        root = "plpl"
-        # root = Tk()
-        # root.title('Wanderer Game')
-        return root
+    root = None
 
-    root = init()
+    def init(self):
+        root = Tk()
+        root.title('Wanderer Game')
+        return root
 
     @staticmethod
     def load_image(path):
