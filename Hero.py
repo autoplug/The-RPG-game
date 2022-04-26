@@ -17,7 +17,7 @@ class Hero(Sprite):
 
     move_count = 0
 
-    Level = 0
+    Level = 1
 
     d6 = 2
     __HP = 20 + 3 * d6
@@ -28,38 +28,17 @@ class Hero(Sprite):
     y = 0
 
     def __init__(self, game):
-        super().__init__(game)
+        Sprite.__init__(self, game)
         game.sprite(hero=self)
 
         self.HP = 20 + 3 * random.randint(1, 6)
 
-        self.image_down = PhotoImage(file="images/hero-down.png")
-        self.image_down = self.image_down.subsample(2)
-
-        self.image_up = PhotoImage(file="images/hero-up.png")
-        self.image_up = self.image_up.subsample(2)
-
-        self.image_left = PhotoImage(file="images/hero-left.png")
-        self.image_left = self.image_left.subsample(2)
-
-        self.image_right = PhotoImage(file="images/hero-right.png")
-        self.image_right = self.image_right.subsample(2)
+        self.image_down = self.game.load_image("images/hero-down.png")
+        self.image_up = self.game.load_image("images/hero-up.png")
+        self.image_left = self.game.load_image("images/hero-left.png")
+        self.image_right = self.game.load_image("images/hero-right.png")
 
         self.image = self.image_down
-
-    def move(self, event):
-        self.move_count += 1
-        if self.game.move_permit(direction=event.keysym, x=self.x, y=self.y):
-            [self.x, self.y] = self.game.move_permit(
-                direction=event.keysym, x=self.x, y=self.y)
-            if event.keysym == "Right":
-                self.image = self.image_right
-            elif event.keysym == "Left":
-                self.image = self.image_left
-            elif event.keysym == "Down":
-                self.image = self.image_down
-            elif event.keysym == "Up":
-                self.image = self.image_up
 
     # HP prperty
     @property
@@ -91,6 +70,20 @@ class Hero(Sprite):
             sprite.strike(self)
             if sprite.HP == 0:
                 self.Level += 1
+
+    def move(self, event):
+        self.move_count += 1
+        if self.game.move_permit(direction=event.keysym, x=self.x, y=self.y):
+            [self.x, self.y] = self.game.move_permit(
+                direction=event.keysym, x=self.x, y=self.y)
+            if event.keysym == "Right":
+                self.image = self.image_right
+            elif event.keysym == "Left":
+                self.image = self.image_left
+            elif event.keysym == "Down":
+                self.image = self.image_down
+            elif event.keysym == "Up":
+                self.image = self.image_up
 
     def update(self):
         x = self.x * self.game.image_size

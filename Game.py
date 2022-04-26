@@ -30,11 +30,8 @@ class Game:
         self.label = Label(self.window, text="Health : 0")
         self.label.pack()
 
-        self.floor = PhotoImage(file="images/floor.png")
-        self.floor = self.floor.subsample(2)
-
-        self.wall = PhotoImage(file="images/wall.png")
-        self.wall = self.wall.subsample(2)
+        self.floor = self.load_image("images/floor.png")
+        self.wall = self.load_image("images/wall.png")
 
     def load_map(self):
         file_map = open(f"maps/{self.Level}.txt", "r")
@@ -105,7 +102,7 @@ class Game:
                     self.hero.x = 0
                     self.hero.y = 0
                     self.boss.HP = 2
-                    self.boss.init_location()
+                    self.boss.random_location()
                     for skeleton in self.skeletons:
                         skeleton.HP = 2
                     self.load_map()

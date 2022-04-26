@@ -22,12 +22,9 @@ class Boss(Sprite):
     y = 0
 
     def __init__(self, game):
-        super().__init__(game)
+        Sprite.__init__(self, game)
         game.sprite(boss=self)
-
-        self.image = PhotoImage(file="images/boss.png")
-        self.image = self.image.subsample(2)
-
+        self.image = self.game.load_image("images/boss.png")
         self.random_location()
 
     @property
