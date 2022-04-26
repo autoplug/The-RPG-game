@@ -10,8 +10,7 @@ class Draw:
         root.title('Wanderer Game')
         return root
 
-    @staticmethod
-    def load_image(path):
+    def load_image(self, path):
         image = PhotoImage(file=path)
         image = image.subsample(2)
         return image
