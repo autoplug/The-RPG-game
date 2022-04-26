@@ -1,6 +1,4 @@
 from tkinter import *
-import random
-import time
 from Sprite import *
 
 
@@ -9,7 +7,6 @@ class Skeleton(Sprite):
     image = None
     image_key = None
 
-    last_move = time.time()
     previous_move = [0, 0]
 
     d6 = 1

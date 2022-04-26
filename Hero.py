@@ -12,7 +12,6 @@ class Hero(Sprite):
     image_left = None
     image_right = None
 
-    last_move = time.time()
     previous_location = [0, 0]
 
     move_count = 0
@@ -23,9 +22,6 @@ class Hero(Sprite):
     __HP = 20 + 3 * d6
     __DP = 2 * d6
     __SP = 5 + d6
-
-    x = 0
-    y = 0
 
     def __init__(self, game):
         Sprite.__init__(self, game)
@@ -39,6 +35,7 @@ class Hero(Sprite):
         self.image_right = self.game.load_image("images/hero-right.png")
 
         self.image = self.image_down
+        self.delay = 0.5
 
     # HP prperty
     @property

@@ -7,30 +7,16 @@ class Sprite:
     image = None
     image_size = 32
 
-    __x = 0
-    __y = 0
-    game = None
-
     delay = 1
+    last_move = time.time()
+
+    x = 0
+    y = 0
+
+    game = None
 
     def __init__(self, game):
         self.game = game
-
-    @property
-    def x(self):
-        return self.__x
-
-    @x.setter
-    def x(self, value):
-        self.__x = value
-
-    @property
-    def y(self):
-        return self.__y
-
-    @y.setter
-    def y(self, value):
-        self.__y = value
 
     def strike(self, sprite=None):
         if not sprite:

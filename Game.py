@@ -77,7 +77,7 @@ class Game:
 
     def draw_menu(self):
         self.label["text"] = ""
-        self.label["text"] += "Level    : " + str(self.hero.Level) + '\n'
+        self.label["text"] += "Level    : " + str(self.Level) + '\n'
         self.label["text"] += "Hero     : " + str(self.hero.HP) + '\n'
         self.label['text'] += "Boss     : " + str(self.boss.HP) + '\n'
         for skeleton in self.skeletons:

@@ -8,7 +8,6 @@ class Boss(Sprite):
     game = None
     image = None
 
-    last_move = time.time()
     previous_move = [0, 0]
 
     d6 = 1
@@ -17,9 +16,6 @@ class Boss(Sprite):
     _HP = 2 * Level * d6 + d6
     DP = Level / 2 * d6 + d6 / 2
     SP = Level * d6 + Level
-
-    x = 0
-    y = 0
 
     def __init__(self, game):
         Sprite.__init__(self, game)
