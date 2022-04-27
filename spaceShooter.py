@@ -206,7 +206,7 @@ class Player(pygame.sprite.Sprite):
             self.rect.right = WIDTH
         if self.rect.left < 0:
             self.rect.left = 0
-
+        self.speedx += 1
         self.rect.x += self.speedx
 
     def shoot(self):
