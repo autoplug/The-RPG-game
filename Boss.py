@@ -1,52 +1,29 @@
 from tkinter import *
+from Character import *
 import random
-import time
-from Sprite import *
 
 
-class Boss(Sprite):
+class Boss(Character):
     game = None
     image = None
 
-    previous_move = [0, 0]
-
-    d6 = 1
-    Level = 1
-
-    _HP = 2 * Level * d6 + d6
-    DP = Level / 2 * d6 + d6 / 2
-    SP = Level * d6 + Level
-
     def __init__(self, game):
-        Sprite.__init__(self, game)
-        game.sprite(boss=self)
+        super().__init__(game)
+        game.get_character(boss=self)
         self.image = self.game.load_image("images/boss.png")
+
         self.random_location()
+        self.level_stats()
 
-    @property
-    def HP(self):
-        return self._HP
+    def level_stats(self):
+        self.d6 = random.randint(1, 6)
 
-    @HP.setter
-    def HP(self, value):
-        if self._HP > 0 and value <= 0:
-            print("The boss Died.")
-
-        if value <= 0:
-            self._HP = 0
-        else:
-            self._HP = value
-
-    def strike(self, sprite=None):
-        if not sprite:
-            return
-        if self.SP >= sprite.DP:
-            sprite.HP -= 1
+        self.HP = 2 * self.game.Level * self.d6 + self.d6
+        self.DP = self.game.Level / 2 * self.d6 + self.d6 / 2
+        self.SP = self.game.Level * self.d6 + self.game.Level
 
     def update(self):
         if self.HP <= 0:
             return
         self.random_move()
-        x = self.x * self.game.image_size
-        y = self.y * self.game.image_size
-        self.game.canvas.create_image(x, y, image=self.image, anchor=NW)
+        self.game.draw_image(self)

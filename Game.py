@@ -7,9 +7,9 @@ class Game:
 
     window = None
 
-    Level = 1
-
     quit = False
+
+    Level = 1
 
     hero = None
     boss = None
@@ -44,11 +44,19 @@ class Game:
                 self.map[line].append(char)
 
     def load_image(self, path):
-        image = PhotoImage(file=path)
-        image = image.subsample(2)
-        return image
+        return PhotoImage(file=path).subsample(2)
 
-    def sprite(self, hero=None, boss=None, skeleton=None):
+    def draw_image(self, character):
+        x = character.x * self.image_size
+        y = character.y * self.image_size
+        self.canvas.create_image(x, y, image=character.image, anchor=NW)
+
+        # this is skeleton with key
+        if character.key:
+            self.canvas.create_image(
+                x, y, image=character.image_key, anchor=NW)
+
+    def get_character(self, hero=None, boss=None, skeleton=None):
         if hero:
             self.hero = hero
         if boss:
@@ -60,10 +68,10 @@ class Game:
         if event.keysym == "Escape":
             self.quit = True
         if event.keysym == "space":
-            sprite = self.collide()
-            if sprite:
-                self.hero.strike(sprite)
-                sprite.strike(self.hero)
+            character = self.collide()
+            if character:
+                self.hero.strike(character)
+                character.strike(self.hero)
         else:
             self.hero.move(event)
 
@@ -101,13 +109,10 @@ class Game:
                     self.Level += 1
                     self.hero.x = 0
                     self.hero.y = 0
-                    self.boss.HP = 2
-                    self.boss.random_location()
-                    for skeleton in self.skeletons:
-                        skeleton.HP = 2
+                    for character in self.skeletons+[self.boss]:
+                        character.level_stats()
+                        character.random_location()
                     self.load_map()
-
-        return False
 
     def update(self):
         self.collide()
@@ -126,10 +131,8 @@ class Game:
                     self.canvas.create_image(
                         x1, y1, image=self.floor, anchor=NW)
 
-        self.hero.update()
-        self.boss.update()
-        for skeleton in self.skeletons:
-            skeleton.update()
+        for character in [*self.skeletons, self.boss, self.hero]:
+            character.update()
 
         self.window.update_idletasks()
         self.window.update()
