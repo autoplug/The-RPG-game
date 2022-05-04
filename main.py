@@ -8,8 +8,8 @@ game = Game()
 hero = Hero(game)
 boss = Boss(game)
 
-skeleton1 = Skeleton(game)
-skeleton1.key = True
+# skeleton with the key
+skeleton1 = Skeleton(game, True)
 
 skeleton2 = Skeleton(game)
 skeleton3 = Skeleton(game)

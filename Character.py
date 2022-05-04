@@ -40,8 +40,13 @@ class Character:
             self.__HP = hp
 
     def strike(self, character):
-        if self.SP >= character.DP:
-            character.HP -= 1
+        d6 = random.randint(1, 6)
+        # The strike is successful if 2 * d6 + SP is higher than the other character's DP.
+        if (2 * d6 + self.SP) >= character.DP:
+            character.HP -= self.SP
+            # After a hero character performed a strike the defender should strike back the same way
+            if (2 * d6 + character.SP) >= self.DP:
+                self.HP -= character.SP
 
     def random_location(self):
         while True:

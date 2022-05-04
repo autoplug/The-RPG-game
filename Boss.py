@@ -12,13 +12,13 @@ class Boss(Character):
         game.get_character(boss=self)
         self.image = self.game.load_image("images/boss.png")
 
-        self.random_location()
         self.level_stats()
 
     def level_stats(self):
+        self.random_location()
         self.d6 = random.randint(1, 6)
-
         self.HP = 2 * self.game.Level * self.d6 + self.d6
+        self.MaxHP = self.HP
         self.DP = self.game.Level / 2 * self.d6 + self.d6 / 2
         self.SP = self.game.Level * self.d6 + self.game.Level
 

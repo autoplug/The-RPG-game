@@ -27,7 +27,7 @@ class Game:
         self.canvas.pack()
         self.load_map()
 
-        self.label = Label(self.window, text="Health : 0")
+        self.label = Label(self.window, text="")
         self.label.pack()
 
         self.floor = self.load_image("images/floor.png")
@@ -35,13 +35,8 @@ class Game:
 
     def load_map(self):
         file_map = open(f"maps/{self.Level}.txt", "r")
-        file_map = file_map.read()
-        file_map = file_map.split("\n")
-        self.map = []
-        for line in range(len(file_map)):
-            self.map.append([])
-            for char in file_map[line]:
-                self.map[line].append(char)
+        self.map = file_map.readlines()
+        file_map.close()
 
     def load_image(self, path):
         return PhotoImage(file=path).subsample(2)
@@ -85,11 +80,11 @@ class Game:
 
     def draw_menu(self):
         self.label["text"] = ""
-        self.label["text"] += "Level    : " + str(self.Level) + '\n'
-        self.label["text"] += "Hero     : " + str(self.hero.HP) + '\n'
-        self.label['text'] += "Boss     : " + str(self.boss.HP) + '\n'
+        self.label["text"] += f"Level    : {self.Level}\n"
+        self.label["text"] += f"Hero HP: {self.hero.HP}/{self.hero.MaxHP} | DP: {self.hero.DP} | SP: {self.hero.SP}\n"
+        self.label['text'] += f"Boss HP: {self.boss.HP}/{self.boss.MaxHP} | DP: {self.boss.DP} | SP: {self.boss.SP}\n"
         for skeleton in self.skeletons:
-            self.label['text'] += "Skeleton : " + str(skeleton.HP) + '\n'
+            self.label['text'] += f"Boss HP: {skeleton.HP}/{skeleton.MaxHP} | DP: {skeleton.DP} | SP: {skeleton.SP}\n"
 
     def move_permit(self, direction="Right", x=0, y=0):
         if direction == "Right" and x < 9 and self.map[y][x+1] != "w":
@@ -103,13 +98,15 @@ class Game:
         return False
 
     def next_level(self):
+        # When the enemy with the key is killed, the hero should enter the new level automatically
         if self.boss.HP == 0:
             for skeleton in self.skeletons:
                 if skeleton.key and skeleton.HP == 0:
                     self.Level += 1
                     self.hero.x = 0
                     self.hero.y = 0
-                    for character in self.skeletons+[self.boss]:
+                    self.hero.level_stats()
+                    for character in [*self.skeletons, self.boss]:
                         character.level_stats()
                         character.random_location()
                     self.load_map()

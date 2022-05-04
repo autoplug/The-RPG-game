@@ -6,23 +6,22 @@ class Skeleton(Character):
     image = None
     image_key = None
 
-    key = False
-
-    def __init__(self, game):
+    def __init__(self, game, key=False):
         super().__init__(game)
         game.get_character(skeleton=self)
-
+        self.key = key
         self.image = self.game.load_image("images/skeleton.png")
         self.image_key = self.game.load_image("images/key.png")
 
-        self.random_location()
         self.level_stats()
 
     def level_stats(self):
-        self.d6 = random.randint(1, 6)
+        self.random_location()
 
+        self.d6 = random.randint(1, 6)
         self.HP = 2 * self.game.Level * self.d6
-        self.DP = self.game.Level / 2 * self.d6
+        self.MaxHP = self.HP
+        self.DP = (self.game.Level / 2) * self.d6
         self.SP = self.game.Level * self.d6
 
     def update(self):

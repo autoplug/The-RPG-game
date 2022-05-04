@@ -5,11 +5,6 @@ import random
 
 class Hero(Character):
     game = None
-    image = None
-    image_down = None
-    image_up = None
-    image_left = None
-    image_right = None
 
     def __init__(self, game):
         super().__init__(game)
@@ -20,11 +15,17 @@ class Hero(Character):
         self.image_left = self.game.load_image("images/hero-left.png")
         self.image_right = self.game.load_image("images/hero-right.png")
 
-        self.image = self.image_down
         self.delay = 0.5
 
+        self.level_stats()
+
+    def level_stats(self):
+        self.image = self.image_down
+        self.x = 0
+        self.y = 0
         self.d6 = random.randint(1, 6)
         self.HP = 20 + 3 * self.d6
+        self.MaxHP = self.HP
         self.DP = 2 * self.d6
         self.SP = 5 + self.d6
 
