@@ -1,1 +1,0 @@
-print("sdr. ASD".capitalize())

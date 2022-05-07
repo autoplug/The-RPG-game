@@ -7,6 +7,8 @@ class Character:
     image = None
     image_size = 32
 
+    movement = 0
+
     key = False
 
     delay = 1
@@ -60,10 +62,10 @@ class Character:
         return [x, y]
 
     def random_move(self):
-        if time.time() - self.last_move < self.delay:
+        # After every two move, the monsters move one tile as well.
+        if self.game.hero_movement-self.movement < 2:
             return
-
-        self.last_move = time.time() + random.randint(0, 5)/5
+        self.movement = self.game.hero_movement
 
         while True:
             direction = ["Right", "Left", "Up", "Down"]

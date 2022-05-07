@@ -10,8 +10,8 @@ class Skeleton(Character):
         super().__init__(game)
         game.get_character(skeleton=self)
         self.key = key
-        self.image = self.game.load_image("images/skeleton.png")
-        self.image_key = self.game.load_image("images/key.png")
+        self.image = PhotoImage(file="images/skeleton.png").subsample(2)
+        self.image_key = PhotoImage(file="images/key.png").subsample(2)
 
         self.level_stats()
 

@@ -10,10 +10,11 @@ class Hero(Character):
         super().__init__(game)
         game.get_character(hero=self)
 
-        self.image_down = self.game.load_image("images/hero-down.png")
-        self.image_up = self.game.load_image("images/hero-up.png")
-        self.image_left = self.game.load_image("images/hero-left.png")
-        self.image_right = self.game.load_image("images/hero-right.png")
+        self.image_down = PhotoImage(file="images/hero-down.png").subsample(2)
+        self.image_up = PhotoImage(file="images/hero-up.png").subsample(2)
+        self.image_left = PhotoImage(file="images/hero-left.png").subsample(2)
+        self.image_right = PhotoImage(
+            file="images/hero-right.png").subsample(2)
 
         self.delay = 0.5
 
@@ -30,6 +31,7 @@ class Hero(Character):
         self.SP = 5 + self.d6
 
     def move(self, event):
+        self.game.hero_movement += 1
         if self.game.move_permit(direction=event.keysym, x=self.x, y=self.y):
             [self.x, self.y] = self.game.move_permit(
                 direction=event.keysym, x=self.x, y=self.y)

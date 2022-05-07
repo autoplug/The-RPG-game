@@ -15,6 +15,8 @@ class Game:
     boss = None
     skeletons = []
 
+    hero_movement = 0
+
     def __init__(self):
         self.window = Tk()
         self.window.title('Wanderer Game')
@@ -30,16 +32,13 @@ class Game:
         self.label = Label(self.window, text="")
         self.label.pack()
 
-        self.floor = self.load_image("images/floor.png")
-        self.wall = self.load_image("images/wall.png")
+        self.floor = PhotoImage(file="images/floor.png").subsample(2)
+        self.wall = PhotoImage(file="images/wall.png").subsample(2)
 
     def load_map(self):
         file_map = open(f"maps/{self.Level}.txt", "r")
         self.map = file_map.readlines()
         file_map.close()
-
-    def load_image(self, path):
-        return PhotoImage(file=path).subsample(2)
 
     def draw_image(self, character):
         x = character.x * self.image_size
@@ -84,7 +83,7 @@ class Game:
         self.label["text"] += f"Hero HP: {self.hero.HP}/{self.hero.MaxHP} | DP: {self.hero.DP} | SP: {self.hero.SP}\n"
         self.label['text'] += f"Boss HP: {self.boss.HP}/{self.boss.MaxHP} | DP: {self.boss.DP} | SP: {self.boss.SP}\n"
         for skeleton in self.skeletons:
-            self.label['text'] += f"Boss HP: {skeleton.HP}/{skeleton.MaxHP} | DP: {skeleton.DP} | SP: {skeleton.SP}\n"
+            self.label['text'] += f"Skeleton HP: {skeleton.HP}/{skeleton.MaxHP} | DP: {skeleton.DP} | SP: {skeleton.SP}\n"
 
     def move_permit(self, direction="Right", x=0, y=0):
         if direction == "Right" and x < 9 and self.map[y][x+1] != "w":

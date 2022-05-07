@@ -10,7 +10,7 @@ class Boss(Character):
     def __init__(self, game):
         super().__init__(game)
         game.get_character(boss=self)
-        self.image = self.game.load_image("images/boss.png")
+        self.image = PhotoImage(file="images/boss.png").subsample(2)
 
         self.level_stats()
 

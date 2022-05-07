@@ -10,7 +10,6 @@ boss = Boss(game)
 
 # skeleton with the key
 skeleton1 = Skeleton(game, True)
-
 skeleton2 = Skeleton(game)
 skeleton3 = Skeleton(game)
 
